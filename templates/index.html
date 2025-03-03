@@ -3,18 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horizon Events</title>
+    <title>Horizon - Events</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-    <h1>Horizon</h1>
-    <a href="{{ url_for('post_event') }}">Post an Event</a>
-    <ul>
+    <header>
+        <h1>Horizon</h1>
+        <a href="{{ url_for('post_event') }}" class="btn">Post an Event</a>
+    </header>
+
+    <div class="container">
         {% for event in events %}
-            <li>
-                <a href="{{ url_for('event_detail', event_id=event.id) }}">{{ event.name }}</a>
-                <a href="{{ url_for('register', event_id=event.id) }}">Register</a>
-            </li>
+        <div class="event-card">
+            <h2>{{ event.name }}</h2>
+            <p><strong>Location:</strong> {{ event.address }}</p>
+            <p><strong>Date & Time:</strong> {{ event.date }} at {{ event.time }}</p>
+            <a href="{{ url_for('event_detail', event_id=event.id) }}" class="details-btn">View Details</a>
+            <a href="{{ url_for('register', event_id=event.id) }}" class="register-btn">Register</a>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Horizon. All rights reserved.</p>
+    </footer>
 </body>
 </html>

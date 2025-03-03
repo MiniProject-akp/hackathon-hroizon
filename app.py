@@ -7,6 +7,8 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+app.config['CACHE_REDIS_URL'] = 'redis://localhost:6379/0'
+app.config['CACHE_TYPE'] = 'RedisCache'
 
 bcrypt = Bcrypt(app)
 socketio = SocketIO(app)
@@ -39,7 +41,10 @@ def fetch_query(query, params=()):
     return result
 
 @app.route('/')
+@cache.cached(timeout=300, key_prefix='all_events')
 def index():
+     # Cache for 5 minutes
+
     events = fetch_query("SELECT * FROM event")
     return render_template('index.html', events=events)
 
@@ -86,6 +91,7 @@ def register(event_id):
     return render_template('register.html', event=event[0])
 
 @app.route('/event/<int:event_id>')
+@cache.cached(timeout=300, key_prefix=lambda: f'event_{request.view_args["event_id"]}')
 def event_detail(event_id):
     event = fetch_query("SELECT * FROM event WHERE id = %s", (event_id,))
     registrations = fetch_query("SELECT * FROM registration WHERE event_id = %s", (event_id,))
