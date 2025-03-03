@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+</head>
+<body>
+    <h1>{{ event.name }}</h1>
+    <p>{{ event.address }}</p>
+    <p>Date: {{ event.date }}</p>
+    <p>Time: {{ event.time }}</p>
+    <h2>Registrations</h2>
+    <ul>
+        {% for reg in registrations %}
+            <li>{{ reg.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
