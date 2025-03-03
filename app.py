@@ -115,47 +115,10 @@ def event_chat(event_id):
     
     return render_template('chat.html', event=event[0], username=username)
 
-# @socketio.on('join')
-# def handle_join(data):
-#     username = data['username']
-#     event_id = data['event_id']
-#     room = f"event_{event_id}"
-#     join_room(room)
-#     emit('message', {'msg': f'{username} has joined the chat.'}, to=room)
 
-# @socketio.on('message')
-# def handle_message(data):
-#     event_id = data['event_id']
-#     room = f"event_{event_id}"
-#     query = """
-#         INSERT INTO messages (message, user_id, event_id) 
-#         VALUES (%s, %s, %s)
-#     """
-#     params = (data['msg'], data['user_id'], event_id)
-#     execute_query(query, params)
-#     emit('message', {'username': data['username'], 'msg': data['msg']}, to=room)
-
-# @socketio.on('leave')
-# def handle_leave(data):
-#     username = data['username']
-#     event_id = data['event_id']
-#     room = f"event_{event_id}"
-#     leave_room(room)
-#     emit('message', {'msg': f'{username} has left the chat.'}, to=room)
-
-# @app.route('/event/<int:event_id>/messages')
-# def get_messages(event_id):
-#     messages = fetch_query("SELECT * FROM messages WHERE event_id = %s", (event_id,))
-#     return {'messages': [{'username': fetch_query("SELECT name FROM user WHERE id = %s", (m['user_id'],))[0]['name'], 'message': m['message']} for m in messages]}
-
-# @app.route('/event/<int:event_id>/participants')
-# def get_participants(event_id):
-#     registrations = fetch_query("SELECT * FROM registration WHERE event_id = %s", (event_id,))
-#     return {'participants': [{'name': fetch_query("SELECT name FROM user WHERE id = %s", (r['user_id'],))[0]['name']} for r in registrations]}
 
 
 from flask import Flask, render_template, request
-from recommendations import get_recommendations  # Import the function
 
 @app.route("/recommendations/<int:event_id>")
 def show_recommendations(event_id):
@@ -249,9 +212,6 @@ def leaderboard():
 
     return render_template('leaderboard.html', leaderboard=leaderboard_data)
 
-@app.route('/report_event/<int:event_id>')
-def report_event(event_id):
-    return render_template('report_form.html', event_id=event_id)
 
 
 
